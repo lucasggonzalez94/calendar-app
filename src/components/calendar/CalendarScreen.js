@@ -12,6 +12,8 @@ import CalendarModal from './CalendarModal';
 import { messages } from '../../helpers/calendar-messages-es';
 import { useDispatch } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
+import { eventSetActive } from '../../actions/calendar';
+import AddNewFab from '../ui/AddNewFab';
 
 moment.locale('es');
 
@@ -34,18 +36,21 @@ const CalendarScreen = () => {
 
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month');
 
-  const onDoubleClick = (e) => {
+  const onDoubleClick = () => {
     dispatch(uiOpenModal());
   };
   
-  const onSelectEvent = (e) => {};
+  const onSelectEvent = (e) => {
+    dispatch(eventSetActive(e));
+    dispatch(uiOpenModal());
+  };
 
   const onViewChange = (e) => {
     setLastView(e);
     localStorage.setItem('lastView', e);
   };
 
-  const eventStyleGetter = ( event, start, end, isSelected ) => {
+  const eventStyleGetter = () => {
     const style = {
       backgroundColor: '#367CF7',
       opacity: 0.8,
@@ -77,6 +82,7 @@ const CalendarScreen = () => {
         }}
       />
       <CalendarModal />
+      <AddNewFab />
     </div>
   );
 };
