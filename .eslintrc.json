@@ -13,7 +13,7 @@
   },
   "plugins": ["react", "react-hooks"],
   "rules": {
-    "semi": ["error", "always"],
+    "semi": ["warn", "always"],
     "quotes": ["error", "single"],
     "no-unused-vars": "warn",
     "no-console": "warn",
@@ -21,7 +21,8 @@
     "react/jsx-uses-vars": "error",
     "react/react-in-jsx-scope": "error",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "react/prop-types": "off"
   },
   "settings": {
     "react": {
