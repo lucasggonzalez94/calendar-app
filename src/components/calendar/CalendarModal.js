@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
@@ -9,6 +9,7 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import { uiCloseModal } from '../../actions/ui';
+import { eventAddNew, eventSetActive, eventUpdate } from '../../actions/calendar';
 
 const customStyles = {
   content: {
@@ -25,19 +26,23 @@ Modal.setAppElement('#root');
 
 const startDate = moment().minutes(0).seconds(0).add(1, 'hours');
 
+const INITIAL_EVENT = {
+  title: '',
+  notes: '',
+  start: startDate.toDate(),
+  end: startDate.add(1, 'hours').toDate()
+};
+
 const CalendarModal = () => {
 
   const { modalOpen } = useSelector(state => state.ui);
+  const { activeEvent } = useSelector(state => state.calendar);
+
   const dispatch = useDispatch();
 
   const [dateStart, setDateStart] = useState(startDate.toDate());
   const [dateEnd, setDateEnd] = useState(startDate.add(1, 'hours').toDate());
-  const [formValues, setFormValues] = useState({
-    title: 'Evento',
-    notes: '',
-    start: startDate.toDate(),
-    end: startDate.add(1, 'hours').toDate()
-  });
+  const [formValues, setFormValues] = useState(INITIAL_EVENT);
   const [titleValid, setTitleValid] = useState(true);
 
   const { title, notes, start, end } = formValues;
@@ -50,7 +55,9 @@ const CalendarModal = () => {
   };
 
   const closeModal = () => {
+    setFormValues(INITIAL_EVENT);
     dispatch(uiCloseModal());
+    dispatch(eventSetActive(null));
   };
 
   const handleStartDate = (e) => {
@@ -84,9 +91,27 @@ const CalendarModal = () => {
       return setTitleValid(false);
     }
 
+    // TODO: Agregar validacion si ya existe otro evento a la misma hora
+
+    if (activeEvent) {
+      dispatch(eventUpdate(formValues));
+    } else {
+      dispatch(eventAddNew({
+        ...formValues,
+        id: new Date().getTime()
+      }));
+    }
     setTitleValid(true);
     closeModal();
   };
+
+  useEffect(() => {
+    if (activeEvent) {
+      setFormValues(activeEvent);
+    } else {
+      setFormValues(INITIAL_EVENT);
+    }
+  }, [activeEvent, dispatch]);
 
   return (
     <Modal
@@ -97,7 +122,7 @@ const CalendarModal = () => {
       className="modal"
       overlayClassName="modal-bg"
     >
-      <h3> Nuevo evento </h3>
+      <h3>{!activeEvent ? 'Nuevo evento' : 'Editar evento'}</h3>
       <hr />
       <form
         className="container"

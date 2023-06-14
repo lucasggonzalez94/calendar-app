@@ -6,7 +6,7 @@ const CalendarEvent = ({ event }) => {
   return (
     <div>
       <strong>{title}</strong>
-      <span>{` - ${user.name}`}</span>
+      {user ? <span>{` - ${user.name}`}</span> : null}
     </div>
   );
 };
