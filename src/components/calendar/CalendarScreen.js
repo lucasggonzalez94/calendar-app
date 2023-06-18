@@ -19,17 +19,6 @@ import DeleteEventFab from '../ui/DeleteEventFab';
 moment.locale('es');
 
 const localizer = momentLocalizer(moment);
-// const events = [
-//   {
-//     title: 'Mi cumpleaños',
-//     start: moment().toDate(),
-//     end: moment().add(2, 'hours').toDate(),
-//     user: {
-//       _id: '123',
-//       name: 'Lucas'
-//     }
-//   }
-// ];
 
 const CalendarScreen = () => {
 
