@@ -1,5 +1,5 @@
 import React from 'react';
-import { eventDelete } from '../../actions/calendar';
+import { eventStartDelete } from '../../actions/calendar';
 import { useDispatch } from 'react-redux';
 
 const DeleteEventFab = () => {
@@ -8,7 +8,7 @@ const DeleteEventFab = () => {
   return (
     <button
       className='btn btn-danger fab-danger'
-      onClick={() => dispatch(eventDelete())}
+      onClick={() => dispatch(eventStartDelete())}
     >
       <i className='fas fa-trash'></i>
       <span> Borrar evento</span>

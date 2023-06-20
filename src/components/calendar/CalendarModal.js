@@ -9,7 +9,7 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import { uiCloseModal } from '../../actions/ui';
-import { eventSetActive, eventStartAddNew, eventUpdate } from '../../actions/calendar';
+import { eventSetActive, eventStartAddNew, eventStartUpdate } from '../../actions/calendar';
 
 const customStyles = {
   content: {
@@ -94,7 +94,7 @@ const CalendarModal = () => {
     // TODO: Agregar validacion si ya existe otro evento a la misma hora
 
     if (activeEvent) {
-      dispatch(eventUpdate(formValues));
+      dispatch(eventStartUpdate(formValues));
     } else {
       dispatch(eventStartAddNew(formValues));
     }
